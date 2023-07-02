@@ -1,35 +1,50 @@
-import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
 
-import { Header } from '../components/Header';
-import { Task, TasksList } from '../components/TasksList';
-import { TodoInput } from '../components/TodoInput';
+import {Header} from '../components/Header';
+import {Task, TasksList} from '../components/TasksList';
+import {TodoInput} from '../components/TodoInput';
 
 export function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
 
   function handleAddTask(newTaskTitle: string) {
-    //TODO - add new task
+    const newTasks = tasks
+
+    newTasks.push({
+      id: newTasks.length + 1,
+      title: newTaskTitle,
+      done: false
+    })
+
+    setTasks(newTasks)
   }
 
   function handleToggleTaskDone(id: number) {
-    //TODO - toggle task done if exists
+    const newTasks = tasks.map(task => ({
+      ...task,
+      done: task.id === id ? !task.done : task.done
+    }))
+
+    setTasks(newTasks)
   }
 
   function handleRemoveTask(id: number) {
-    //TODO - remove task from state
+    const newTasks = tasks.filter(task => task.id !== id)
+
+    setTasks(newTasks)
   }
 
   return (
     <View style={styles.container}>
-      <Header tasksCounter={tasks.length} />
+      <Header tasksCounter={tasks.length}/>
 
-      <TodoInput addTask={handleAddTask} />
+      <TodoInput addTask={handleAddTask}/>
 
-      <TasksList 
-        tasks={tasks} 
+      <TasksList
+        tasks={tasks}
         toggleTaskDone={handleToggleTaskDone}
-        removeTask={handleRemoveTask} 
+        removeTask={handleRemoveTask}
       />
     </View>
   )
